@@ -381,12 +381,23 @@ class VRDos {
 
     if (domElement) {
       domElement.appendChild(this.renderer.domElement);
-      domElement.appendChild(
-        VRButton.createButton(
-          this.renderer,
-          { referenceSpaceType: 'local-floor' }
-        )
+      const button = VRButton.createButton(
+        this.renderer,
+        { referenceSpaceType: 'local-floor' }
       );
+      domElement.appendChild(
+        button
+      );
+      let onclick = null;
+      Object.defineProperty(button, 'onclick', {
+        get() {
+          return onclick;
+        },
+        set(newOnClick) {
+          onclick = newOnClick;
+          onclick();
+        },
+      });
     } else {
       throw Error('Missing container dom element');
     }
